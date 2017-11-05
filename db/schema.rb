@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20171105193745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "merchant_id"
+    t.string "merchant_password_hash"
+    t.string "payment_url"
+    t.string "email"
+    t.float "amount"
+    t.integer "order_id"
+    t.datetime "order_timestamp"
+    t.string "error_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
