@@ -94,7 +94,7 @@ RSpec.describe PaymentsController, type: :controller do
       it "creates Payment with order_timestmap" do
         payment = Payment.last
 
-        expect(payment.order_timestamp).to be_within(1.second).of(DateTime.now)
+        expect(payment.order_timestamp).to be_within(2.seconds).of(DateTime.now)
       end
 
       it "creates Payment with error_url" do
