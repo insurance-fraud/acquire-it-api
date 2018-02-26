@@ -1,24 +1,14 @@
-# README
+[![Build Status](https://semaphoreci.com/api/v1/insurance-fraud/acquire-it-api/branches/master/shields_badge.svg)](https://semaphoreci.com/insurance-fraud/acquire-it-api)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# acquire-it-api
 
-Things you may want to cover:
+API that checks whether insurances can be bought
 
-* Ruby version
+## Running
 
-* System dependencies
+Running is easy, just do:
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+docker-compose build
+docker-compose up
+```
