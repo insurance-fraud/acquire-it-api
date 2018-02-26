@@ -6,7 +6,7 @@ services:
     build: .
     command: bundle exec rails s -p 4001 -b '0.0.0.0'
     volumes:
-      - .:/merch-it
+      - .:/acquire-it
     ports:
       - "4001:4001"
     depends_on:
