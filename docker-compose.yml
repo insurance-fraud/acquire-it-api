@@ -9,5 +9,7 @@ services:
       - .:/acquire-it
     ports:
       - "4001:4001"
+    links:
+      - acquire-it-api.db:db
     depends_on:
       - acquire-it-api.db

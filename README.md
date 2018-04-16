@@ -8,7 +8,8 @@ API that checks whether insurances can be bought
 
 Running is easy, just do:
 
-```
+```bash
 docker-compose build
+docker-compose run acquire-it-api.web rake db:setup db:migrate
 docker-compose up
 ```
