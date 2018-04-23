@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Payments", type: :request do
-  describe "GET /payments" do
+  describe "POST /attempt_payment" do
     it "works! (now write some real specs)" do
-      get attempt_payment_payments_path, params: { payment: {
+      post attempt_payment_payments_path, params: { payment: {
         merchant_id: 1,
         merchant_password: "strongpassword",
         amount: 10000.00,

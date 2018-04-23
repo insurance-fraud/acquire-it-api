@@ -41,7 +41,7 @@ RSpec.describe PaymentsController, type: :controller do
   # PaymentsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #attempt_payment" do
+  describe "POST #attempt_payment" do
     context "payment info is OK" do
       before do
         post :attempt_payment,
@@ -127,7 +127,7 @@ RSpec.describe PaymentsController, type: :controller do
         end
 
         it "creates Payment with payment_url" do
-          expect(response).to redirect_to("acquire-it.herokuapp.com/error")
+          expect(response).to be_not_found
         end
       end
 
@@ -147,7 +147,7 @@ RSpec.describe PaymentsController, type: :controller do
         end
 
         it "creates Payment with payment_url" do
-          expect(response).to redirect_to("acquire-it.herokuapp.com/error")
+          expect(response).to be_not_found
         end
       end
 
@@ -167,7 +167,7 @@ RSpec.describe PaymentsController, type: :controller do
         end
 
         it "creates Payment with payment_url" do
-          expect(response).to redirect_to("acquire-it.herokuapp.com/error")
+          expect(response).to be_not_found
         end
       end
     end
