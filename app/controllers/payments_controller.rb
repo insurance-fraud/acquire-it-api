@@ -14,15 +14,16 @@ class PaymentsController < ApplicationController
 
       payment.update_attributes(:payment_url => payment_url)
 
-      render json: { payment_url: payment_url, payment_id: payment.id }
+      render json: { payment_url: payment_url, payment_id: payment.id }, status: :ok
     else
-      redirect_to payment_params[:error_url], :message => payment.errors and return
+      render json: { error_url: payment_params[:error_url] }, status: :not_found
     end
   end
 
   private
   # Only allow a trusted parameter "white list" through.
   def payment_params
+    logger.info params
     params.require(:payment).permit(:merchant_id,
                                     :merchant_password,
                                     :payment_url,
