@@ -16,7 +16,7 @@ class PaymentsController < ApplicationController
 
       render json: { payment_url: payment_url, payment_id: payment.id }, status: :ok
     else
-      render json: { error_url: payment_params[:error_url] }, status: :not_found
+      render json: { error_url: payment_params[:error_url], error: payment.errors }, status: :not_found
     end
   end
 
