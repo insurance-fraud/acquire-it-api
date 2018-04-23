@@ -1,5 +1,5 @@
 class PaymentsController < ApplicationController
-  # GET /payments
+  # POST /attempt_payment
   def attempt_payment
     payment = Payment.new(:merchant_id => payment_params[:merchant_id],
                           :amount => payment_params[:amount],

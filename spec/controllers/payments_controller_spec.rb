@@ -44,17 +44,17 @@ RSpec.describe PaymentsController, type: :controller do
   describe "GET #attempt_payment" do
     context "payment info is OK" do
       before do
-        get :attempt_payment,
-            params: { payment: {
-              merchant_id: 1,
-              merchant_password: "strongpassword",
-              amount: 10000.00,
-              email: "test@example.com",
-              order_id: 12,
-              order_timestamp: Time.now,
-              error_url: "acquire-it.herokuapp.com/error" }
-            },
-            session: valid_session
+        post :attempt_payment,
+          params: { payment: {
+          merchant_id: 1,
+          merchant_password: "strongpassword",
+          amount: 10000.00,
+          email: "test@example.com",
+          order_id: 12,
+          order_timestamp: Time.now,
+          error_url: "acquire-it.herokuapp.com/error" }
+        },
+        session: valid_session
       end
 
       it "returns a success response" do
@@ -113,17 +113,17 @@ RSpec.describe PaymentsController, type: :controller do
     describe "payment info is bad" do
       context "timestamp is not in range" do
         before do
-          get :attempt_payment,
-              params: { payment: {
-                merchant_id: 1,
-                merchant_password: "strongpassword",
-                amount: 10000.00,
-                email: "test@example.com",
-                order_id: 12,
-                order_timestamp: Time.now - 10.seconds,
-                error_url: "acquire-it.herokuapp.com/error" }
-              },
-              session: valid_session
+          post :attempt_payment,
+            params: { payment: {
+            merchant_id: 1,
+            merchant_password: "strongpassword",
+            amount: 10000.00,
+            email: "test@example.com",
+            order_id: 12,
+            order_timestamp: Time.now - 10.seconds,
+            error_url: "acquire-it.herokuapp.com/error" }
+          },
+          session: valid_session
         end
 
         it "creates Payment with payment_url" do
@@ -133,17 +133,17 @@ RSpec.describe PaymentsController, type: :controller do
 
       context "merchant_id is not in the list" do
         before do
-          get :attempt_payment,
-              params: { payment: {
-                merchant_id: 2,
-                merchant_password: "strongpassword",
-                amount: 10000.00,
-                email: "test@example.com",
-                order_id: 12,
-                order_timestamp: Time.now,
-                error_url: "acquire-it.herokuapp.com/error" }
-              },
-              session: valid_session
+          post :attempt_payment,
+            params: { payment: {
+            merchant_id: 2,
+            merchant_password: "strongpassword",
+            amount: 10000.00,
+            email: "test@example.com",
+            order_id: 12,
+            order_timestamp: Time.now,
+            error_url: "acquire-it.herokuapp.com/error" }
+          },
+          session: valid_session
         end
 
         it "creates Payment with payment_url" do
@@ -153,17 +153,17 @@ RSpec.describe PaymentsController, type: :controller do
 
       context "merchant_password is not in the list" do
         before do
-          get :attempt_payment,
-              params: { payment: {
-                merchant_id: 1,
-                merchant_password: "wrong",
-                amount: 10000.00,
-                email: "test@example.com",
-                order_id: 12,
-                order_timestamp: Time.now,
-                error_url: "acquire-it.herokuapp.com/error" }
-              },
-              session: valid_session
+          post :attempt_payment,
+            params: { payment: {
+            merchant_id: 1,
+            merchant_password: "wrong",
+            amount: 10000.00,
+            email: "test@example.com",
+            order_id: 12,
+            order_timestamp: Time.now,
+            error_url: "acquire-it.herokuapp.com/error" }
+          },
+          session: valid_session
         end
 
         it "creates Payment with payment_url" do
