@@ -54,9 +54,9 @@ class PaymentsController < ApplicationController
                        failed_url: payment.failed_url }
 
       if resp.code == 200
-        render json: response_body, status: :ok
+        render json: response_body.merge(success: true), status: :ok
       else
-        render json: response_body, status: :error
+        render json: response_body.merge(success: false), status: :error
       end
     end
   end

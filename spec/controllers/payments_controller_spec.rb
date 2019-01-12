@@ -49,7 +49,6 @@ RSpec.describe PaymentsController, type: :controller do
           merchant_id: 1,
           merchant_password: "strongpassword",
           amount: 10000.00,
-          email: "test@example.com",
           order_id: 12,
           order_timestamp: Time.now,
           error_url: "acquire-it.herokuapp.com/error" }
@@ -73,12 +72,6 @@ RSpec.describe PaymentsController, type: :controller do
         expect(payment.merchant_password).to eq("strongpassword")
       end
 
-      it "creates Payment with proper email" do
-        payment = Payment.last
-
-        expect(payment.email).to eq("test@example.com")
-      end
-
       it "creates Payment with proper amount" do
         payment = Payment.last
 
@@ -88,13 +81,13 @@ RSpec.describe PaymentsController, type: :controller do
       it "creates Payment with order_id" do
         payment = Payment.last
 
-        expect(payment.order_id).to be_a_kind_of(Integer)
+        expect(payment.merchant_order_id).to be_a_kind_of(Integer)
       end
 
       it "creates Payment with order_timestmap" do
         payment = Payment.last
 
-        expect(payment.order_timestamp).to be_within(2.seconds).of(DateTime.now)
+        expect(payment.merchant_order_timestamp).to be_within(2.seconds).of(DateTime.now)
       end
 
       it "creates Payment with error_url" do
@@ -106,31 +99,11 @@ RSpec.describe PaymentsController, type: :controller do
       it "creates Payment with payment_url" do
         payment = Payment.last
 
-        expect(payment.payment_url).to eq("/#{payment.id}/pay")
+        expect(payment.payment_url).to eq("http://localhost:4000/pay")
       end
     end
 
     describe "payment info is bad" do
-      context "timestamp is not in range" do
-        before do
-          post :attempt_payment,
-            params: { payment: {
-            merchant_id: 1,
-            merchant_password: "strongpassword",
-            amount: 10000.00,
-            email: "test@example.com",
-            order_id: 12,
-            order_timestamp: Time.now - 10.seconds,
-            error_url: "acquire-it.herokuapp.com/error" }
-          },
-          session: valid_session
-        end
-
-        it "creates Payment with payment_url" do
-          expect(response).to be_not_found
-        end
-      end
-
       context "merchant_id is not in the list" do
         before do
           post :attempt_payment,
@@ -138,7 +111,6 @@ RSpec.describe PaymentsController, type: :controller do
             merchant_id: 2,
             merchant_password: "strongpassword",
             amount: 10000.00,
-            email: "test@example.com",
             order_id: 12,
             order_timestamp: Time.now,
             error_url: "acquire-it.herokuapp.com/error" }
@@ -158,7 +130,6 @@ RSpec.describe PaymentsController, type: :controller do
             merchant_id: 1,
             merchant_password: "wrong",
             amount: 10000.00,
-            email: "test@example.com",
             order_id: 12,
             order_timestamp: Time.now,
             error_url: "acquire-it.herokuapp.com/error" }
