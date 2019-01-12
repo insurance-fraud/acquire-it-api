@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :payments, :only => [] do
     collection do
       post :attempt_payment
+      post :pay
     end
   end
 end

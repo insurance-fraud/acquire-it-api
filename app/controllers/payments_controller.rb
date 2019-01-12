@@ -1,29 +1,54 @@
 class PaymentsController < ApplicationController
   # POST /attempt_payment
   def attempt_payment
+    logger.info "Started attemp_payment"
+
     payment = Payment.new(:merchant_id => payment_params[:merchant_id],
                           :amount => payment_params[:amount],
-                          :email => payment_params[:email],
-                          :order_id => payment_params[:order_id],
-                          :order_timestamp => payment_params[:order_timestamp],
-                          :error_url => payment_params[:error_url])
+                          :merchant_order_id => payment_params[:order_id],
+                          :merchant_order_timestamp => payment_params[:order_timestamp],
+                          :success_url => payment_params[:success_url],
+                          :error_url => payment_params[:error_url],
+                          :failed_url => payment_params[:failed_url])
     payment.merchant_password = payment_params[:merchant_password]
 
     if payment.save
-      payment_url = "#{ENV["ACQUIRE_IT_URL"]}/#{payment.id}/pay"
+      payment_url = "http://localhost:4000/pay"
 
       payment.update_attributes(:payment_url => payment_url)
 
       render json: { payment_url: payment_url, payment_id: payment.id }, status: :ok
     else
-      render json: { error_url: payment_params[:error_url], error: payment.errors }, status: :not_found
+      render json: { error_url: payment_params[:error_url], error: payment.errors },
+        status: :not_found
+    end
+  end
+
+  def pay
+    payment = Payment.find(params[:id])
+    pan = params[:pan]
+    security_code = params[:security_code]
+    card_holder_name = params[:card_holder_name]
+    expiration_date = params[:expiration_date]
+
+    if pan == 1
+      # check balance and charge the buyer
+    else
+      payment.update(acquirer_order_id: SecureRandom.hex(10),
+                     acquirer_order_timestamp: DateTime.now)
+
+      resp = PCC.pay({ pan: pan,
+                        security_code: security_code,
+                        card_holder_name: card_holder_name,
+                        expiration_date: expiration_date },
+                        payment.acquirer_order_id,
+                        payment.acquirer_order_timestamp)
     end
   end
 
   private
   # Only allow a trusted parameter "white list" through.
   def payment_params
-    logger.info params
     params.require(:payment).permit(:merchant_id,
                                     :merchant_password,
                                     :payment_url,

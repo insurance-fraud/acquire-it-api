@@ -3,7 +3,6 @@ class Payment < ApplicationRecord
 
   validate :merchant_password_must_exist
   validates_inclusion_of :merchant_id, in: :merchant_ids
-  validates_inclusion_of :order_timestamp, in: 5.seconds.ago..Time.now + 5.seconds
 
   def merchant_password
     @password ||= Password.new(merchant_password_hash)
