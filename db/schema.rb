@@ -19,11 +19,14 @@ ActiveRecord::Schema.define(version: 20171105193745) do
     t.integer "merchant_id"
     t.string "merchant_password_hash"
     t.string "payment_url"
-    t.string "email"
     t.float "amount"
-    t.integer "order_id"
-    t.datetime "order_timestamp"
+    t.integer "merchant_order_id"
+    t.datetime "merchant_order_timestamp"
+    t.integer "acquirer_order_id"
+    t.datetime "acquirer_order_timestamp"
+    t.string "success_url"
     t.string "error_url"
+    t.string "failed_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
