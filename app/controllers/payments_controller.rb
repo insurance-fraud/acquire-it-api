@@ -29,7 +29,7 @@ class PaymentsController < ApplicationController
     pan = params[:pan]
     security_code = params[:security_code]
     card_holder_name = params[:card_holder_name]
-    expiration_date = params[:expiration_date]
+    expiry_date = params[:expiry_date]
 
     if pan == 1
       # check balance and charge the buyer
@@ -38,11 +38,26 @@ class PaymentsController < ApplicationController
                      acquirer_order_timestamp: DateTime.now)
 
       resp = PCC.pay({ pan: pan,
-                        security_code: security_code,
-                        card_holder_name: card_holder_name,
-                        expiration_date: expiration_date },
-                        payment.acquirer_order_id,
-                        payment.acquirer_order_timestamp)
+                       security_code: security_code,
+                       card_holder_name: card_holder_name,
+                       expiry_date: expiry_date },
+                       payment.acquirer_order_id,
+                       payment.acquirer_order_timestamp,
+                       payment.amount)
+
+      response_body = { merchant_order_id: payment.merchant_order_id,
+                       acquirer_order_id: payment.acquirer_order_id,
+                       acquirer_order_timestamp: payment.acquirer_order_timestamp,
+                       payment_id: payment.id,
+                       success_url: payment.success_url,
+                       error_url: payment.error_url,
+                       failed_url: payment.failed_url }
+
+      if resp.code == 200
+        render json: response_body, status: :ok
+      else
+        render json: response_body, status: :error
+      end
     end
   end
 
