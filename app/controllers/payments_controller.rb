@@ -46,12 +46,12 @@ class PaymentsController < ApplicationController
                        payment.amount)
 
       response_body = { merchant_order_id: payment.merchant_order_id,
-                       acquirer_order_id: payment.acquirer_order_id,
-                       acquirer_order_timestamp: payment.acquirer_order_timestamp,
-                       payment_id: payment.id,
-                       success_url: payment.success_url,
-                       error_url: payment.error_url,
-                       failed_url: payment.failed_url }
+                        acquirer_order_id: payment.acquirer_order_id,
+                        acquirer_order_timestamp: payment.acquirer_order_timestamp,
+                        payment_id: payment.id,
+                        success_url: payment.success_url,
+                        error_url: payment.error_url,
+                        failed_url: payment.failed_url }
 
       if resp.code == 200
         render json: response_body.merge(success: true), status: :ok
@@ -71,6 +71,8 @@ class PaymentsController < ApplicationController
                                     :email,
                                     :order_id,
                                     :order_timestamp,
+                                    :success_url,
+                                    :failed_url,
                                     :error_url)
   end
 end
