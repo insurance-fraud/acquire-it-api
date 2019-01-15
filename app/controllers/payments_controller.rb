@@ -31,8 +31,29 @@ class PaymentsController < ApplicationController
     card_holder_name = params[:card_holder_name]
     expiry_date = params[:expiry_date]
 
-    if pan == 1
-      # check balance and charge the buyer
+    user = User.find_by(pan: pan,
+                        security_code: security_code,
+                        card_holder_name: card_holder_name,
+                        expiry_date: expiry_date)
+
+    response_body = { merchant_order_id: payment.merchant_order_id,
+                      acquirer_order_id: payment.acquirer_order_id,
+                      acquirer_order_timestamp: payment.acquirer_order_timestamp,
+                      payment_id: payment.id,
+                      success_url: payment.success_url,
+                      error_url: payment.error_url,
+                      failed_url: payment.failed_url }
+
+    amount = payment.amount
+
+    if user.present?
+      if user.total_balance - user.reserved_balance >= amount
+        user.update(reserved_balance: user.reserved_balance + amount)
+
+        render json: response_body.merge(success: true), status: :ok
+      else
+        render json: response_body.merge(success: false), status: :error
+      end
     else
       payment.update(acquirer_order_id: SecureRandom.hex(10),
                      acquirer_order_timestamp: DateTime.now)
@@ -43,7 +64,7 @@ class PaymentsController < ApplicationController
                        expiry_date: expiry_date },
                        payment.acquirer_order_id,
                        payment.acquirer_order_timestamp,
-                       payment.amount)
+                       amount)
 
       response_body = { merchant_order_id: payment.merchant_order_id,
                         acquirer_order_id: payment.acquirer_order_id,
