@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171105193745) do
+ActiveRecord::Schema.define(version: 20190115153240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,17 @@ ActiveRecord::Schema.define(version: 20171105193745) do
     t.string "success_url"
     t.string "error_url"
     t.string "failed_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "pan"
+    t.integer "security_code"
+    t.string "expiry_date"
+    t.string "card_holder_name"
+    t.float "total_balance"
+    t.float "reserved_balance"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
