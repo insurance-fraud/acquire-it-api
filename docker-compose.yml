@@ -4,6 +4,9 @@ services:
     image: postgres
   acquire-it-api.web:
     build: .
+    environment:
+      - DB_USERNAME=postgres
+      - DB_HOST=db
     command: bundle exec rails s -p 4001 -b '0.0.0.0'
     volumes:
       - .:/acquire-it
