@@ -1,4 +1,6 @@
 module PCC
+  PCC_URL = "pcc.web:5000"
+
   def self.pay(card_data, acquirer_order_id, acquirer_order_timestamp, amount)
     body = card_data.merge(
       :acquirer_order_id => acquirer_order_id,
@@ -7,7 +9,7 @@ module PCC
     )
 
     HTTParty.post(
-      "http://localhost:5000/payments/pay",
+      "#{PCC_URL}/payments/pay",
       body: body,
       timeout: 5
     )

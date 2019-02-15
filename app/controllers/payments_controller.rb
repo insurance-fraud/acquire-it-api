@@ -1,4 +1,6 @@
 class PaymentsController < ApplicationController
+  ACQUIRE_IT_URL = ENV["ACQUIRE_IT_URL"] || "http://localhost:4000"
+
   # POST /attempt_payment
   def attempt_payment
     logger.info "Started attemp_payment"
@@ -13,7 +15,7 @@ class PaymentsController < ApplicationController
     payment.merchant_password = payment_params[:merchant_password]
 
     if payment.save
-      payment_url = "http://localhost:4000/pay"
+      payment_url = "#{ACQUIRE_IT_URL}/pay"
 
       payment.update_attributes(:payment_url => payment_url)
 
