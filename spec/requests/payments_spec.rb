@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Payments", type: :request do
   describe "POST /attempt_payment" do
-    it "works! (now write some real specs)" do
+    it "returns status 200" do
       post attempt_payment_payments_path, params: { payment: {
         merchant_id: 1,
         merchant_password: "strongpassword",
@@ -13,7 +13,7 @@ RSpec.describe "Payments", type: :request do
         error_url: "acquire-it.herokuapp.com/error" }
       }
 
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(:ok)
     end
   end
 end
